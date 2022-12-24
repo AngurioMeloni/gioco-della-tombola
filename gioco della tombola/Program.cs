@@ -10,6 +10,7 @@ namespace gioco_della_tombola
     {
         static void Main(string[] args)
         {
+            //dichiarazioni
         }
     }
 }

@@ -74,10 +74,12 @@ namespace gioco_della_tombola
             {
                 Console.WriteLine();
                 Console.SetCursorPosition(xC2, yC2);
-
                 for (int i2 = 0; i2 < CartColumn; i2++)
                 {
-                    C2[i, i2] = r.Next(1, 91);
+                    for (int j = 1; j <= 10; j++)
+                    {
+                        C2[i,i2] =r.Next(1, 91);
+                    }
                     Console.Write(C2[i, i2].ToString("D2") + " ");
                 }
                 yC2++;

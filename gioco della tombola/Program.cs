@@ -47,9 +47,9 @@ namespace gioco_della_tombola
                 yT++;
             }
         }
-        static void FC1(int[,] C1, int xC1,int yC1, int CartRow, int CartColumn)
+        static void FC1(int[,] C1, int xC1, int yC1, int CartRow, int CartColumn)
         {
-            Console.SetCursorPosition(13,11);
+            Console.SetCursorPosition(13, 11);
             Random r = new Random();
             Console.WriteLine("Cartella del primo giocatore");
             for (int i = 0; i < CartRow; i++)
@@ -57,12 +57,16 @@ namespace gioco_della_tombola
                 Console.WriteLine();
                 Console.SetCursorPosition(xC1, yC1);
 
-                for (int i2 = 0; i2 < CartColumn; i2++) 
-                { 
-                    C1[i,i2] = r.Next(1, 91);
+                for (int i2 = 0; i2 < CartColumn; i2++)
+                {
+                    C1[i, i2] = r.Next(1, 91);
                     Console.Write(C1[i, i2].ToString("D2") + " ");
+                    for (int j = 1; j <= 10; j++)
+                    {
+                        C1[i, i2] = r.Next(1, 91);
+                        yC1++;
+                    }
                 }
-                yC1++;
             }
         }
         static void FC2(int[,] C2, int xC2, int yC2, int CartRow, int CartColumn)
@@ -85,5 +89,5 @@ namespace gioco_della_tombola
                 yC2++;
             }
         }
-    }
-}
+   
+

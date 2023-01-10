@@ -104,9 +104,7 @@ namespace gioco_della_tombola
                             if (numero2 == 90)
                             {
                                 a2--;
-
                             }
-
                         } while (t[numero2 - 1] == true || arrayD[numero2 / 10] == true);
                         t[numero2 - 1] = true;
                         arrayD[numero2 / 10] = true;
@@ -128,28 +126,28 @@ namespace gioco_della_tombola
             }
             void FC1()
             {
-                int xC1 = 0;
+                int xC1 = 24;
                 int yC1 = 12;
                 Console.SetCursorPosition(xC1, yC1);
                 Console.WriteLine("Cartella del primo giocatore");
                 yC1++;
                 for (int i = 0; i < 5; i++)
                 {
-                    xC1 = 0;
+                    xC1 = 25;
                     yC1++;
                     if (i % 2 == 1)
                     {
                         Console.SetCursorPosition(xC1, yC1);
-                        Console.WriteLine("-----------------------");
+                        Console.WriteLine("-------------------------");
                     }
                     else
                     {
                         Console.SetCursorPosition(xC1, yC1);
-                        for (int i2 = 0; i2 < CartColumn; i2++)
+                        for (int i2 = 0; i2 < 9; i2++)
                         {
                             if (C1[i2, i / 2 + i % 2] != 0)
                             {
-                                Console.Write(C1[i2, i / 2 + i % 2]);
+                                Console.Write($"{C1[i2, i / 2 + i % 2]} ");
                             }
                             else
                             {
@@ -169,19 +167,19 @@ namespace gioco_della_tombola
             }
             void FC2()
             {
-                int xC2 = 70;
+                int xC2 = 57;
                 int yC2 = 12;
                 Console.SetCursorPosition(xC2, yC2);
                 Console.WriteLine("Cartella del secondo giocatore ");
                 yC2++;
                 for (int i = 0; i < 5; i++)
                 {
-                    xC2 = 70;
+                    xC2 = 58;
                     yC2++;
                     if (i % 2 == 1)
                     {
                         Console.SetCursorPosition(xC2, yC2);
-                        Console.WriteLine("---------------------------");
+                        Console.WriteLine("-------------------------");
                     }
                     else
                     {

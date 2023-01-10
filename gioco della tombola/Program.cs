@@ -12,13 +12,14 @@ namespace gioco_della_tombola
         static void Main(string[] args)
         {
             //dichiarazioni delle variabili per la dimensione delle cartelle e del tabellone
-            int TabRow = 9, TabColumn = 10;
-            int TabN = 1;
+            int TabRow = 9;
+            int TabColumn = 10;
             int CartRow = 3, CartColumn = 9;
+            Random r = new Random();
             //dichiarazione delle variabili per il posizionamento del tabellone e cartelle
             int xT = 40, yT = 1;
             //dichiarazione delle matrici
-            int[,] tabella = new int[TabRow, TabColumn];
+            int[,] tabella = new int[TabColumn, TabRow];
             int[,] C1 = new int[CartColumn, CartRow];
             int[,] C2 = new int[CartColumn, CartRow];
             //richiamo della funzione per la tabella
@@ -39,13 +40,12 @@ namespace gioco_della_tombola
                 Console.WriteLine("Tabellone");
                 for (int i = 0; i < TabRow; i++)
                 {
-                    Console.WriteLine();
-                    Console.SetCursorPosition(xT, yT);
+                    xT = 40;
                     for (int i2 = 0; i2 < TabColumn; i2++)
                     {
-                        tabella[i, i2] = TabN;
-                        Console.Write(tabella[i, i2].ToString("D2") + " ");
-                        TabN++;
+                        Console.SetCursorPosition(xT, yT);
+                        Console.Write("++");
+                        xT += 3;
                     }
                     yT++;
                 }
@@ -53,7 +53,6 @@ namespace gioco_della_tombola
             int GC1()
             {
                 int numero;
-                Random r = new Random();
                 bool[] t = new bool[90];
                 for (int a = 0; a < 3; a++)
                 {
@@ -80,7 +79,7 @@ namespace gioco_della_tombola
                         {
                             C1[numero / 10, a] = numero;
                         }
-                        for (int b = 0; b < CartColumn; b++)
+                        for (int b = 0; b < 9; b++)
                         {
                             arrayD[b] = false;
                         }
@@ -91,7 +90,6 @@ namespace gioco_della_tombola
             int GC2()
             {
                 int numero2;
-                Random r = new Random();
                 bool[] t = new bool[90];
                 for (int a = 0; a < 3; a++)
                 {
@@ -116,7 +114,7 @@ namespace gioco_della_tombola
                         {
                             C2[numero2 / 10, a] = numero2;
                         }
-                        for (int b = 0; b < CartColumn; b++)
+                        for (int b = 0; b < 9; b++)
                         {
                             arrayD[b] = false;
                         }
@@ -207,9 +205,10 @@ namespace gioco_della_tombola
                 }
             }
         }
-    } 
+    }
 }
-
+    
+    
 
    
 

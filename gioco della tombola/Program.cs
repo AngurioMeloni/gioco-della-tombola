@@ -16,7 +16,6 @@ namespace gioco_della_tombola
             int TabN = 1;
             Random r = new Random();
             bool[] T = new bool[90];
-            int V1 = 0, V2 = 0;
             int[,] tabella = new int[9, 10];
             int[,] C1 = new int[9, 3];
             int[,] C2 = new int[9, 3];

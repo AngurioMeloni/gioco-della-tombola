@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace gioco_della_tombola
 {
@@ -11,136 +12,193 @@ namespace gioco_della_tombola
     {
         static void Main(string[] args)
         {
-            //dichiarazioni delle variabili per la dimensione delle cartelle e del tabellone
-            int TabRow = 9;
-            int TabColumn = 10;
-            int CartRow = 3, CartColumn = 9;
+            int numero, x, y = 2;
+            int TabN = 1;
             Random r = new Random();
-            //dichiarazione delle variabili per il posizionamento del tabellone e cartelle
-            int xT = 40, yT = 1;
-            //dichiarazione delle matrici
-            int[,] tabella = new int[TabColumn, TabRow];
-            int[,] C1 = new int[CartColumn, CartRow];
-            int[,] C2 = new int[CartColumn, CartRow];
-            //richiamo della funzione per la tabella
-            Tabella();
-            //richiamo alla funzione di caricamento della prima tabella
-            GC1();
-            //richiamo delle funzione di stampa per la prima cartella
-            GC2();
-            //richiamo alla funzione di caricamento della prima tabella
-            FC1();
-            //richiamo delle funzione di stampa per la seconda cartella
-            FC2();
-            Console.ReadKey();
-            //funzione della stampa della tabella
-            void Tabella()
+            bool[] T = new bool[90];
+            int V1 = 0, V2 = 0;
+            int[,] tabella = new int[9, 10];
+            int[,] C1 = new int[9, 3];
+            int[,] C2 = new int[9, 3];
+            Console.SetCursorPosition(50, 0);
+            Console.WriteLine("Tabellone");
+            for (int i = 0; i < 9; i++)
             {
-                Console.SetCursorPosition(50, 0);
-                Console.WriteLine("Tabellone");
-                for (int i = 0; i < TabRow; i++)
+                x = 40;
+                for (int i2 = 0; i2 < 10; i2++)
                 {
-                    xT = 40;
-                    for (int i2 = 0; i2 < TabColumn; i2++)
-                    {
-                        Console.SetCursorPosition(xT, yT);
-                        Console.Write("++");
-                        xT += 3;
-                    }
-                    yT++;
+                    Console.SetCursorPosition(x, y);
+                    tabella[i, i2] = TabN;
+                    Console.Write(tabella[i, i2].ToString("D2") + " ");
+                    TabN++;
+                    x += 3;
                 }
+                y++;
+            }
+            //richiamo alla funzione per la generazione della prima cartella
+            GC1();
+            //richiamo alla funzione per la generazione della seconda cartella
+            GC2();
+            //richiamo alla funzione di stampa della prima cartella
+            FC1();
+            //richiamo alla funzione di stampa della seconda cartella
+            FC2();
+            for (int i = 0; i < 90; i++)//ciclo di estrazione e controllo 
+            {
+                numero = Estrazione();
+                x = Fx();
+                y = Fy();
+                for (int i2 = 0; i2 < 3; i2++)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(numero);
+                    Thread.Sleep(250);
+                    Console.SetCursorPosition(x, y);
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine(numero);
+                    Thread.Sleep(250);
+                }
+                Thread.Sleep(100);
+            }
+            int Estrazione()
+            {
+                int Estr;
+                do
+                {
+                    Estr = r.Next(1, 91);
+                } while (T[Estr - 1] == true);
+                T[Estr - 1] = true;
+                return Estr;
+            }
+            int Fx()
+            {
+                if (numero / 10 == 0)
+                {
+                    x = 40 + (numero % 10 * 3);
+                }
+                else
+                {
+                    if (numero % 10 != 0)
+                    {
+                        x = 38 + (numero % 10 * 3 - 1);
+                    }
+                    else
+                    {
+                        x = 38 + numero / (numero / 10) * 3 - 1;
+                    }
+                }
+                return x;
+            }
+            int Fy()
+            {
+                if (numero / 10 == 0)
+                {
+                    y = 2;
+                }
+                else
+                {
+                    if (numero % 10 != 0)
+                    {
+                        y = 2 + numero / 10;
+                    }
+                    else
+                    {
+                        y = 1 + numero / 10;
+                    }
+                }
+                return y;
             }
             int GC1()
             {
-                int numero;
-                bool[] t = new bool[90];
-                for (int a = 0; a < 3; a++)
+                bool[] Array90 = new bool[90];
+                int Valore;
+                for (int i = 0; i < 3; i++)
                 {
-                    bool[] arrayD = new bool[10];
-                    for (int a2 = 0; a2 < 5; a2++)
+                    bool[] ArrayDecine = new bool[10];
+                    for (int i2 = 0; i2 < 5; i2++)
                     {
                         do
                         {
-                            numero = r.Next(1, 91);
-                            if (numero == 90)
+                            Valore = r.Next(1, 91);
+                            if (Valore == 90)
                             {
-                                a2--;
-
+                                i2--;
                             }
-
-                        } while (t[numero - 1] == true || arrayD[numero / 10] == true);
-                        t[numero - 1] = true;
-                        arrayD[numero / 10] = true;
-                        if (numero == 90)
+                        } while (Array90[Valore - 1] == true || ArrayDecine[Valore / 10] == true);
+                        Array90[Valore - 1] = true;
+                        ArrayDecine[Valore / 10] = true;
+                        if (Valore == 90)
                         {
-                            C1[8, a] = 90;
+                            C1[8, i] = 90;
                         }
                         else
                         {
-                            C1[numero / 10, a] = numero;
+                            C1[Valore / 10, i] = Valore;
                         }
-                        for (int b = 0; b < 9; b++)
-                        {
-                            arrayD[b] = false;
-                        }
+                    }
+                    for (int i3 = 0; i3 < 9; i3++)
+                    {
+                        ArrayDecine[i3] = false;
                     }
                 }
                 return 0;
             }
             int GC2()
             {
-                int numero2;
-                bool[] t = new bool[90];
-                for (int a = 0; a < 3; a++)
+
+                bool[] Array90 = new bool[90];
+                int Valore;
+                for (int i = 0; i < 3; i++)
                 {
-                    bool[] arrayD = new bool[10];
-                    for (int a2 = 0; a2 < 5; a2++)
+                    bool[] ArrayDecine = new bool[10];
+                    for (int i2 = 0; i2 < 5; i2++)
                     {
                         do
                         {
-                            numero2 = r.Next(1, 91);
-                            if (numero2 == 90)
+                            Valore = r.Next(1, 91);
+                            if (Valore == 90)
                             {
-                                a2--;
+                                i2--;
                             }
-                        } while (t[numero2 - 1] == true || arrayD[numero2 / 10] == true);
-                        t[numero2 - 1] = true;
-                        arrayD[numero2 / 10] = true;
-                        if (numero2 == 90)
+                        } while (Array90[Valore - 1] == true || ArrayDecine[Valore / 10] == true);
+                        Array90[Valore - 1] = true;
+                        ArrayDecine[Valore / 10] = true;
+                        if (Valore == 90)
                         {
-                            C2[8, a] = 90;
+                            C2[8, i] = 90;
                         }
                         else
                         {
-                            C2[numero2 / 10, a] = numero2;
+                            C2[Valore / 10, i] = Valore;
                         }
-                        for (int b = 0; b < 9; b++)
-                        {
-                            arrayD[b] = false;
-                        }
+                    }
+                    for (int i3 = 0; i3 < 9; i3++)
+                    {
+                        ArrayDecine[i] = false;
                     }
                 }
                 return 0;
             }
             void FC1()
             {
-                int xC1 = 24;
-                int yC1 = 12;
-                Console.SetCursorPosition(xC1, yC1);
-                Console.WriteLine("Cartella del primo giocatore");
-                yC1++;
+                x = 25;
+                y = 12;
+                Console.SetCursorPosition(24, y);
+                Console.WriteLine("Cartella del primo giocatore ");
+                y++;//incremento di y 
                 for (int i = 0; i < 5; i++)
                 {
-                    xC1 = 25;
-                    yC1++;
+                    x = 25;
+                    y++;
                     if (i % 2 == 1)
                     {
-                        Console.SetCursorPosition(xC1, yC1);
+                        Console.SetCursorPosition(x, y);
                         Console.WriteLine("-------------------------");
                     }
                     else
                     {
-                        Console.SetCursorPosition(xC1, yC1);
+                        Console.SetCursorPosition(x, y);
                         for (int i2 = 0; i2 < 9; i2++)
                         {
                             if (C1[i2, i / 2 + i % 2] != 0)
@@ -165,23 +223,23 @@ namespace gioco_della_tombola
             }
             void FC2()
             {
-                int xC2 = 57;
-                int yC2 = 12;
-                Console.SetCursorPosition(xC2, yC2);
+                x = 58;
+                y = 12;
+                Console.SetCursorPosition(56, y);
                 Console.WriteLine("Cartella del secondo giocatore ");
-                yC2++;
+                y++;
                 for (int i = 0; i < 5; i++)
                 {
-                    xC2 = 58;
-                    yC2++;
+                    x = 58;
+                    y++;
                     if (i % 2 == 1)
                     {
-                        Console.SetCursorPosition(xC2, yC2);
+                        Console.SetCursorPosition(x, y);
                         Console.WriteLine("-------------------------");
                     }
                     else
                     {
-                        Console.SetCursorPosition(xC2, yC2);
+                        Console.SetCursorPosition(x, y);
                         for (int i2 = 0; i2 < 9; i2++)
                         {
                             if (C2[i2, i / 2 + i % 2] != 0)

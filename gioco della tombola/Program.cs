@@ -13,23 +13,20 @@ namespace gioco_della_tombola
         static void Main(string[] args)
         {
             int numero, x, y = 2;
-            int TabN = 1;
             Random r = new Random();
             bool[] T = new bool[90];
-            int[,] tabella = new int[9, 10];
+            int V1 = 0, V2 = 0;
             int[,] C1 = new int[9, 3];
             int[,] C2 = new int[9, 3];
             Console.SetCursorPosition(50, 0);
             Console.WriteLine("Tabellone");
             for (int i = 0; i < 9; i++)
             {
-                x = 40;
+                x = 13;
                 for (int i2 = 0; i2 < 10; i2++)
                 {
                     Console.SetCursorPosition(x, y);
-                    tabella[i, i2] = TabN;
-                    Console.Write(tabella[i, i2].ToString("D2") + " ");
-                    TabN++;
+                    Console.Write("0");
                     x += 3;
                 }
                 y++;
@@ -50,15 +47,21 @@ namespace gioco_della_tombola
                 for (int i2 = 0; i2 < 3; i2++)
                 {
                     Console.SetCursorPosition(x, y);
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(numero);
-                    Thread.Sleep(250);
+                    Thread.Sleep(500);
                     Console.SetCursorPosition(x, y);
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine(numero);
-                    Thread.Sleep(250);
+                    Thread.Sleep(500);
                 }
-                Thread.Sleep(100);
+                //richiamo alla funzione di verifica della presenza dei numeri estratti nella prima cartella
+                FV1();
+                //richiamo alla funzione di verifica della presenza dei numeri estratti nella seconda cartella
+                FV2();
+                //richiamo alla funzione di controllo tombola
+                ControlT();
+                Thread.Sleep(200);
             }
             int Estrazione()
             {
@@ -74,17 +77,17 @@ namespace gioco_della_tombola
             {
                 if (numero / 10 == 0)
                 {
-                    x = 40 + (numero % 10 * 3);
+                    x = 10 + (numero % 10 * 3);
                 }
                 else
                 {
                     if (numero % 10 != 0)
                     {
-                        x = 38 + (numero % 10 * 3 - 1);
+                        x = 11 + (numero % 10 * 3 - 1);
                     }
                     else
                     {
-                        x = 38 + numero / (numero / 10) * 3 - 1;
+                        x = 11 + numero / (numero / 10) * 3 - 1;
                     }
                 }
                 return x;
@@ -181,14 +184,14 @@ namespace gioco_della_tombola
             }
             void FC1()
             {
-                x = 25;
+                x = 0;
                 y = 12;
-                Console.SetCursorPosition(24, y);
+                Console.SetCursorPosition(x, y);
                 Console.WriteLine("Cartella del primo giocatore ");
                 y++;//incremento di y 
                 for (int i = 0; i < 5; i++)
                 {
-                    x = 25;
+                    x = 0;
                     y++;
                     if (i % 2 == 1)
                     {
@@ -222,14 +225,14 @@ namespace gioco_della_tombola
             }
             void FC2()
             {
-                x = 58;
+                x = 30;
                 y = 12;
-                Console.SetCursorPosition(56, y);
+                Console.SetCursorPosition(x, y);
                 Console.WriteLine("Cartella del secondo giocatore ");
                 y++;
                 for (int i = 0; i < 5; i++)
                 {
-                    x = 58;
+                    x = 30;
                     y++;
                     if (i % 2 == 1)
                     {
@@ -261,11 +264,100 @@ namespace gioco_della_tombola
                     }
                 }
             }
+            int FV1()
+            {
+                x = 0;
+                y = 14;
+                for (int k = 0; k < 3; k++)
+                {
+                    for (int j = 0; j < 9; j++)
+                    {
+                        if (C1[j, k] == numero)
+                        {
+                            if (j == 0)
+                            {
+                                x = 0;
+                            }
+                            else
+                            {
+                                x += j * 3 - 1;
+                            }
+                            y += k * 2;
+                            V1++;
+                            Console.SetCursorPosition(x, y);//impostare la posizione a x e y
+                            Console.BackgroundColor = ConsoleColor.Green;//impostare il colore dello sfondo a magenta
+                            Console.Write(numero);//output del numero con sfondo magenta
+                            Console.BackgroundColor = ConsoleColor.Black;//impostare il colore dello sfondo a nero  
+                        }
+                    }
+                }
+                return V1;
+            }
+
+            int FV2()
+            {
+                x = 30;
+                y = 14;
+                for (int k = 0; k < 3; k++)
+                {
+                    for (int j = 0; j < 9; j++)
+                    {
+                        if (C2[j, k] == numero)
+                        {
+                            if (j == 0)
+                            {
+                                x = 30;
+                            }
+                            else
+                            {
+                                x += j * 3 - 1;
+                            }
+                            y += k * 2;
+                            V2++;
+                            Console.SetCursorPosition(x, y);
+                            Console.BackgroundColor = ConsoleColor.Yellow;
+                            Console.Write(numero);
+                            Console.BackgroundColor = ConsoleColor.Black;
+
+                        }
+                    }
+                }
+                return V2;
+            }
+            int ControlT()
+            {
+                if (V1 == 15 && V2 == 15)
+                {
+                    Console.SetCursorPosition(13, 31);
+                    Console.Write("Entrambi i giocatori hanno vinto");
+                    Console.SetCursorPosition(0, 0);
+                    Environment.Exit(1);
+                    return 0;
+                }
+                else if (V1 == 15)
+                {
+                    Console.SetCursorPosition(0, 30);
+                    Console.Write("Il giocatore 1 ha fatto tombola");
+                    Console.SetCursorPosition(0, 0);
+                    Environment.Exit(1);
+                    return 0;
+                }
+                else if (V2 == 15)
+                {
+                    Console.SetCursorPosition(30, 30);
+                    Console.Write("Il giocatore 2 ha fatto tombola");
+                    Console.SetCursorPosition(0, 0);
+                    Environment.Exit(1);
+                    return 0;
+                }
+                return 0;
+            }
         }
     }
 }
-    
-    
 
-   
+
+
+
+
 
